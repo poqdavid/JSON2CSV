@@ -13,6 +13,8 @@ namespace JSON2CSV
 {
     public partial class J2C_Form : Form
     {
+        private Settings settings = new Settings();
+        private string settingsfile = "settings.json";
         public List<String> file_list = new List<string>();
         public Dictionary<string, string> data_list = new Dictionary<string, string>();
         public Dictionary<string, JsonTextReader> json_list = new Dictionary<string, JsonTextReader>();
@@ -28,6 +30,15 @@ namespace JSON2CSV
 
         private void J2C_Form_Load(object sender, EventArgs e)
         {
+            if (File.Exists(this.settingsfile))
+            {
+                this.LoadSettings();
+            }
+            else
+            {
+                this.SaveSetings();
+                this.LoadSettings();
+            }
         }
 
         private void J2C_Convert_Click(object sender, EventArgs e)
@@ -219,6 +230,8 @@ namespace JSON2CSV
             if (cofd.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 J2C_ListBox_Folder.Items.Add(Directory.Exists(cofd.FileName) ? cofd.FileName : Path.GetDirectoryName(cofd.FileName));
+                this.settings.Folders = J2C_ListBox_Folder.Items.OfType<string>().ToList();
+                this.SaveSetings();
             }
         }
 
@@ -295,6 +308,39 @@ namespace JSON2CSV
         private void J2C_Button_Save_EnabledChanged(object sender, EventArgs e)
         {
             J2C_SaveToolStripMenuItem.Enabled = J2C_Button_Save.Enabled;
+        }
+
+        private void SaveSetings()
+        {
+            JsonSerializer serializer = new JsonSerializer();
+            serializer.NullValueHandling = NullValueHandling.Include;
+            serializer.Formatting = Formatting.Indented;
+            using (StreamWriter sw = new StreamWriter(this.settingsfile))
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(writer, this.settings);
+            }
+        }
+
+        private void LoadSettings()
+        {
+            string jsonString = File.ReadAllText(settingsfile);
+            this.settings = JsonConvert.DeserializeObject<Settings>(jsonString);
+            this.J2C_TextBox_JPath.Text = this.settings.JsonPath;
+            this.J2C_TextBox_JSep.Text = this.settings.Separator;
+            this.J2C_ListBox_Folder.Items.AddRange(this.settings.Folders.ToArray());
+        }
+
+        private void J2C_TextBox_JPath_TextChanged(object sender, EventArgs e)
+        {
+            this.settings.JsonPath = J2C_TextBox_JPath.Text;
+            this.SaveSetings();
+        }
+
+        private void J2C_TextBox_JSep_TextChanged(object sender, EventArgs e)
+        {
+            this.settings.Separator = this.J2C_TextBox_JSep.Text;
+            this.SaveSetings();
         }
     }
 }

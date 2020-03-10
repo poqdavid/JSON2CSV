@@ -92,6 +92,7 @@
             this.J2C_TextBox_JSep.TabIndex = 16;
             this.J2C_TextBox_JSep.Text = "/";
             this.J2C_ToolTip.SetToolTip(this.J2C_TextBox_JSep, "Separator");
+            this.J2C_TextBox_JSep.TextChanged += new System.EventHandler(this.J2C_TextBox_JSep_TextChanged);
             // 
             // J2C_ListBox_Folder
             // 
@@ -137,6 +138,7 @@
             this.J2C_TextBox_JPath.Size = new System.Drawing.Size(1095, 20);
             this.J2C_TextBox_JPath.TabIndex = 11;
             this.J2C_ToolTip.SetToolTip(this.J2C_TextBox_JPath, "JSON Path > $..<name>[*]");
+            this.J2C_TextBox_JPath.TextChanged += new System.EventHandler(this.J2C_TextBox_JPath_TextChanged);
             // 
             // J2C_Button_Convert
             // 
@@ -212,7 +214,7 @@
             // J2C_AddFolderToolStripMenuItem
             // 
             this.J2C_AddFolderToolStripMenuItem.Name = "J2C_AddFolderToolStripMenuItem";
-            this.J2C_AddFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.J2C_AddFolderToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.J2C_AddFolderToolStripMenuItem.Text = "Add Folder";
             this.J2C_AddFolderToolStripMenuItem.Click += new System.EventHandler(this.J2C_AddFolder_Click);
             // 
@@ -220,7 +222,7 @@
             // 
             this.J2C_SaveToolStripMenuItem.Enabled = false;
             this.J2C_SaveToolStripMenuItem.Name = "J2C_SaveToolStripMenuItem";
-            this.J2C_SaveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.J2C_SaveToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.J2C_SaveToolStripMenuItem.Text = "Save";
             this.J2C_SaveToolStripMenuItem.Click += new System.EventHandler(this.J2C_Save_Click);
             // 
